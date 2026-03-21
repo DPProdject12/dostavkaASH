@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ash — ресторан кавказской кухни</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #fffaf6;
+      --surface: #ffffff;
+      --surface-2: #f6efe7;
+      --text: #1f1a17;
+      --muted: #6f655f;
+      --brand: #a03a2b;
+      --brand-2: #d36b2c;
+      --accent: #2f6b4f;
+      --line: #eadfd4;
+      --shadow: 0 18px 40px rgba(52, 32, 16, .10);
+      --radius: 22px;
+      --container: 1220px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(211,107,44,.10), transparent 30%),
+        radial-gradient(circle at top left, rgba(160,58,43,.10), transparent 28%),
+        var(--bg);
+      line-height: 1.6;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    .container { width: min(calc(100% - 32px), var(--container)); margin: 0 auto; }
+    .section { padding: 76px 0; }
+    .section-title {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 1.4rem + 1.8vw, 3rem);
+      line-height: 1.1;
+    }
+    .section-subtitle {
+      margin: 0 0 34px;
+      color: var(--muted);
+      max-width: 720px;
+      font-size: 1.05rem;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(14px);
+      background: rgba(255, 250, 246, .88);
+      border-bottom: 1px solid rgba(234,223,212,.8);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 78px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: .2px;
+    }
+    .logo-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(160,58,43,.25);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+      padding: 0;
+      margin: 0;
+      align-items: center;
+    }
+    nav a { color: var(--muted); font-weight: 600; transition: .2s ease; }
+    nav a:hover { color: var(--brand); }
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .phone-pill, .cart-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 12px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .phone-pill:hover, .cart-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .cart-count { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 6px; border-radius: 999px; background: var(--brand); color: #fff; font-size: .82rem; }
+    .hero { padding: 42px 0 28px; }
+    .hero-grid { display: grid; grid-template-columns: 1.4fr .9fr; gap: 24px; align-items: stretch; }
+    .hero-card {
+      position: relative;
+      min-height: 520px;
+      border-radius: 32px;
+      overflow: hidden;
+      padding: 42px;
+      color: #fff;
+      background:
+        linear-gradient(180deg, rgba(23,18,14,.20), rgba(23,18,14,.78)),
+        url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .hero-badge { display: inline-flex; width: fit-content; align-items: center; gap: 10px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); padding: 10px 16px; border-radius: 999px; margin-bottom: 22px; font-size: .95rem; font-weight: 700; backdrop-filter: blur(10px); }
+    .hero h1 { margin: 0 0 16px; font-size: clamp(2.6rem, 1.8rem + 3.2vw, 5rem); line-height: .98; max-width: 720px; }
+    .hero p { margin: 0 0 28px; color: rgba(255,255,255,.88); max-width: 650px; font-size: 1.12rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    .btn { border: none; border-radius: 999px; padding: 14px 22px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: .2s ease; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; box-shadow: 0 12px 24px rgba(160,58,43,.25); }
+    .btn-secondary { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(8px); }
+    .hero-side { display: grid; gap: 18px; }
+    .info-card { background: rgba(255,255,255,.82); border: 1px solid rgba(234,223,212,.9); border-radius: 28px; padding: 24px; box-shadow: var(--shadow); }
+    .info-card h3 { margin: 0 0 16px; font-size: 1.45rem; }
+    .info-list { display: grid; gap: 16px; }
+    .info-item { display: flex; gap: 14px; align-items: flex-start; }
+    .info-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: var(--surface-2); color: var(--brand); flex: 0 0 auto; }
+    .info-item strong { display: block; margin-bottom: 2px; }
+    .info-item span { color: var(--muted); }
+    .feature-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .feature { background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 18px; min-height: 130px; }
+    .feature i { color: var(--brand); font-size: 1.1rem; margin-bottom: 12px; }
+    .feature strong { display: block; margin-bottom: 8px; font-size: 1rem; }
+    .feature p { margin: 0; color: var(--muted); font-size: .94rem; }
+    .promos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .promo { border-radius: 26px; padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--line); background: linear-gradient(180deg, #fff, #fff8f1); }
+    .promo:nth-child(2) { background: linear-gradient(180deg, #fff, #f4fbf7); }
+    .promo:nth-child(3) { background: linear-gradient(180deg, #fff, #fff3f0); }
+    .promo i { color: var(--brand); font-size: 1.3rem; margin-bottom: 16px; }
+    .promo h3 { margin: 0 0 8px; font-size: 1.2rem; }
+    .promo p { margin: 0; color: var(--muted); }
+    .menu-toolbar { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; margin-bottom: 20px; }
+    .search-box { position: relative; }
+    .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #9b8f87; }
+    .search-box input, .sort-select { width: 100%; height: 52px; border-radius: 18px; border: 1px solid var(--line); background: #fff; padding: 0 16px 0 46px; color: var(--text); outline: none; transition: .2s ease; }
+    .sort-select { min-width: 220px; padding-left: 16px; cursor: pointer; }
+    .search-box input:focus, .sort-select:focus { border-color: rgba(160,58,43,.45); box-shadow: 0 0 0 4px rgba(160,58,43,.08); }
+    .filter-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+    .filter-btn { border: 1px solid var(--line); background: #fff; color: var(--muted); padding: 10px 16px; border-radius: 999px; cursor: pointer; font-weight: 700; transition: .2s ease; }
+    .filter-btn.active, .filter-btn:hover { background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; border-color: transparent; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+    .dish-card { background: rgba(255,255,255,.9); border: 1px solid rgba(234,223,212,.95); border-radius: 24px; overflow: hidden; box-shadow: var(--shadow); transition: .22s ease; display: flex; flex-direction: column; cursor: pointer; }
+    .dish-card:hover { transform: translateY(-6px); }
+    .dish-image-wrap { position: relative; aspect-ratio: 16/11; overflow: hidden; }
+    .dish-image { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+    .dish-card:hover .dish-image { transform: scale(1.04); }
+    .dish-tag { position: absolute; left: 14px; top: 14px; background: rgba(255,255,255,.92); color: var(--brand); border-radius: 999px; padding: 7px 11px; font-size: .82rem; font-weight: 800; }
+    .dish-body { padding: 18px 18px 20px; display: grid; gap: 12px; flex: 1; }
+    .dish-title { margin: 0; font-size: 1.18rem; line-height: 1.2; }
+    .dish-desc { margin: 0; color: var(--muted); font-size: .95rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 68px; }
+    .dish-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .meta-chip { font-size: .82rem; font-weight: 700; color: var(--muted); background: var(--surface-2); border-radius: 999px; padding: 7px 10px; }
+    .dish-footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .dish-price { font-size: 1.35rem; font-weight: 900; color: var(--accent); }
+    .empty-state { background: #fff; border: 1px dashed #d7c7b7; border-radius: 24px; padding: 42px; text-align: center; color: var(--muted); box-shadow: var(--shadow); }
+    .about-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 24px; align-items: center; }
+    .about-image { min-height: 440px; border-radius: 30px; box-shadow: var(--shadow); background: linear-gradient(180deg, rgba(32,20,15,.18), rgba(32,20,15,.48)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat; }
+    .about-card { background: rgba(255,255,255,.92); border: 1px solid var(--line); border-radius: 30px; padding: 32px; box-shadow: var(--shadow); }
+    .about-points { display: grid; gap: 16px; margin-top: 22px; }
+    .about-point { display: flex; gap: 14px; align-items: flex-start; }
+    .about-point i { color: var(--brand); margin-top: 4px; }
+    footer { padding: 46px 0 28px; background: #241b16; color: rgba(255,255,255,.88); margin-top: 32px; }
+    .footer-grid { display: grid; grid-template-columns: 1.1fr .9fr .9fr; gap: 28px; margin-bottom: 26px; }
+    .footer-card h3, .footer-card h4 { margin: 0 0 14px; color: #fff; }
+    .footer-card p, .footer-card a { color: rgba(255,255,255,.76); margin: 0 0 8px; display: block; }
+    .footer-copy { border-top: 1px solid rgba(255,255,255,.12); padding-top: 18px; color: rgba(255,255,255,.56); font-size: .94rem; }
+    .drawer { position: fixed; top: 0; right: -460px; width: min(100%, 440px); height: 100vh; background: rgba(255,255,255,.98); backdrop-filter: blur(10px); z-index: 1200; box-shadow: -12px 0 40px rgba(31, 26, 23, .16); transition: right .32s ease; display: flex; flex-direction: column; }
+    .drawer.active { right: 0; }
+
+    .branches-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; }
+    .branch-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow-soft); }
+    .branch-card h3 { margin: 0 0 10px; font-size: 1.12rem; }
+    .branch-card p { margin: 0 0 8px; color: var(--muted); }
+    .branch-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .branch-note { margin-top: 14px; color: var(--muted); font-size: .95rem; }
+    .drawer-header, .drawer-footer { padding: 20px; border-bottom: 1px solid var(--line); }
+    .drawer-footer { border-bottom: none; border-top: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,.7), rgba(246,239,231,.95)); }
+    .drawer-title-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .icon-btn { border: 1px solid var(--line); background: #fff; width: 44px; height: 44px; border-radius: 14px; cursor: pointer; color: var(--text); display: grid; place-items: center; }
+    .drawer-body { flex: 1; overflow: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+    .cart-empty { border: 1px dashed #d8c8ba; border-radius: 24px; padding: 28px; text-align: center; color: var(--muted); background: #fff; }
+    .cart-item { display: grid; grid-template-columns: 78px 1fr auto; gap: 14px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 12px; }
+    .cart-thumb { width: 78px; height: 78px; border-radius: 18px; object-fit: cover; }
+    .cart-item h4 { margin: 0 0 6px; font-size: 1rem; line-height: 1.25; }
+    .cart-item p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .qty-controls { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+    .qty-btn { width: 30px; height: 30px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); cursor: pointer; font-weight: 800; }
+    .remove-link { background: none; border: none; color: var(--brand); font-weight: 700; cursor: pointer; padding: 0; margin-top: 10px; }
+    .cart-summary { display: grid; gap: 10px; margin-bottom: 18px; }
+    .summary-row { display: flex; justify-content: space-between; gap: 16px; color: var(--muted); }
+    .summary-row.total { color: var(--text); font-size: 1.12rem; font-weight: 800; padding-top: 12px; border-top: 1px solid var(--line); }
+    .checkout-form { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .checkout-form.active { display: block; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; margin-bottom: 6px; font-weight: 700; font-size: .92rem; }
+    .field input, .field textarea { width: 100%; border-radius: 16px; border: 1px solid var(--line); background: #fff; padding: 13px 14px; outline: none; transition: .2s ease; }
+    .field input:focus, .field textarea:focus { border-color: rgba(160,58,43,.45); box-shadow: 0 0 0 4px rgba(160,58,43,.08); }
+    .field-error { color: #c0392b; font-size: .84rem; margin-top: 6px; display: none; }
+    .overlay { position: fixed; inset: 0; background: rgba(15,10,7,.46); z-index: 1100; opacity: 0; visibility: hidden; transition: .22s ease; }
+    .overlay.active { opacity: 1; visibility: visible; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,10,7,.58); z-index: 1300; display: grid; place-items: center; padding: 20px; opacity: 0; visibility: hidden; transition: .22s ease; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal { width: min(100%, 860px); background: #fff; border-radius: 30px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; box-shadow: 0 22px 50px rgba(30,19,13,.25); }
+    .modal-media { min-height: 100%; background: #f3ebe3; }
+    .modal-media img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-content { padding: 28px; display: flex; flex-direction: column; gap: 18px; }
+    .modal-top { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
+    .modal-top h3 { margin: 0; font-size: 1.8rem; line-height: 1.08; }
+    .modal-text { color: var(--muted); margin: 0; }
+    .nutrition { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .nutrition-item { border: 1px solid var(--line); border-radius: 18px; padding: 14px; background: var(--surface-2); }
+    .nutrition-item span { display: block; color: var(--muted); font-size: .88rem; margin-bottom: 4px; }
+    .nutrition-item strong { font-size: 1.08rem; }
+    .modal-bottom { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .modal-price { font-size: 2rem; font-weight: 900; color: var(--accent); }
+    .toast-wrap { position: fixed; right: 18px; bottom: 18px; display: grid; gap: 10px; z-index: 2000; }
+    .toast { min-width: 260px; max-width: 360px; padding: 14px 16px; border-radius: 18px; color: #fff; box-shadow: 0 18px 35px rgba(16, 12, 9, .20); animation: toastIn .22s ease; display: flex; gap: 12px; align-items: flex-start; }
+    .toast.success { background: linear-gradient(135deg, #2f6b4f, #4a8a69); }
+    .toast.error { background: linear-gradient(135deg, #a03a2b, #c55234); }
+    @keyframes toastIn { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @media (max-width: 1080px) { .hero-grid, .about-grid, .footer-grid, .promos, .branches-grid { grid-template-columns: 1fr; } .feature-strip { grid-template-columns: 1fr; } .menu-toolbar { grid-template-columns: 1fr; } .sort-select { min-width: 100%; } .modal { grid-template-columns: 1fr; } .modal-media { max-height: 280px; } }
+    @media (max-width: 860px) { nav { display: none; } .header-inner { min-height: 72px; } .hero-card { min-height: 460px; padding: 28px; } .hero h1 { font-size: 2.7rem; } }
+    @media (max-width: 640px) { .container { width: min(calc(100% - 24px), var(--container)); } .hero { padding-top: 24px; } .hero-card { min-height: 420px; border-radius: 26px; } .info-card { border-radius: 24px; } .drawer { width: 100%; right: -100%; } .dish-card { border-radius: 20px; } .section { padding: 62px 0; } .modal-content { padding: 20px; } .nutrition { grid-template-columns: 1fr; } .header-actions .phone-pill { display: none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="#top" class="logo"><span class="logo-mark"><i class="fas fa-bowl-rice"></i></span><span>Ash</span></a>
+      <nav><ul><li><a href="#menu">Меню</a></li><li><a href="#promos">Акции</a></li><li><a href="#about">О ресторане</a></li><li><a href="#branches">Филиалы</a></li><li><a href="#contact">Контакты</a></li></ul></nav>
+      <div class="header-actions"><a class="phone-pill" href="tel:+79281234567"><i class="fas fa-phone"></i> +7 (928) 555-12-12</a><button class="cart-btn" id="cart-toggle"><i class="fas fa-bag-shopping"></i> Корзина <span class="cart-count" id="cart-count">0</span></button></div>
+    </div>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-card">
+          <div class="hero-badge"><i class="fas fa-fire-flame-curved"></i> Кавказская кухня • доставка • Бабаюрт</div>
+          <h1>Настоящие вкусы Кавказа — горячие блюда, хинкал, шашлык и домашние десерты</h1>
+          <p>Готовим сытные блюда по традиционным рецептам, аккуратно упаковываем заказы и быстро доставляем по Бабаюрту и району. Удобное меню, понятная корзина и оформление без лишних шагов.</p>
+          <div class="hero-actions"><a href="#menu" class="btn btn-primary"><i class="fas fa-utensils"></i> Открыть меню</a><a href="#contact" class="btn btn-secondary"><i class="fas fa-location-dot"></i> Контакты</a></div>
+        </div>
+        <div class="hero-side">
+          <div class="info-card">
+            <h3>О ресторане</h3>
+            <div class="info-list">
+              <div class="info-item"><div class="info-icon"><i class="fas fa-location-dot"></i></div><div><strong>Адрес</strong><span>с. Бабаюрт, ул. Ирчи Казака, 57</span></div></div>
+              <div class="info-item"><div class="info-icon"><i class="fas fa-clock"></i></div><div><strong>Время работы</strong><span>Ежедневно, 10:00–23:00</span></div></div>
+              <div class="info-item"><div class="info-icon"><i class="fas fa-truck"></i></div><div><strong>Доставка</strong><span>По Бабаюрту и ближайшим районам, бесплатно от 800 ₽</span></div></div>
+              <div class="info-item"><div class="info-icon"><i class="fas fa-phone-volume"></i></div><div><strong>Связь</strong><span>Заказы по телефону и через сайт</span></div></div>
+            </div>
+          </div>
+          <div class="feature-strip">
+            <div class="feature"><i class="fas fa-drumstick-bite"></i><strong>Сытное меню</strong><p>Основные блюда, салаты, напитки, закуски и десерты в одном каталоге.</p></div>
+            <div class="feature"><i class="fas fa-bell-concierge"></i><strong>Быстрое оформление</strong><p>Корзина открывается сбоку, заказ подтверждается без грубых всплывающих окон.</p></div>
+            <div class="feature"><i class="fas fa-star"></i><strong>Понятный выбор</strong><p>Каждое блюдо можно открыть, посмотреть описание и пищевую ценность.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="promos">
+      <div class="container"><h2 class="section-title">Специальные предложения</h2><p class="section-subtitle">Собрали самые полезные акции, чтобы сайт выглядел живым и удобным для заказа, а не просто витриной с блюдами.</p><div class="promos"><article class="promo"><i class="fas fa-percent"></i><h3>Скидка 20% на первый заказ</h3><p>Промокод <strong>ASH20</strong> применяется в корзине автоматически при первом заказе от 1000 ₽.</p></article><article class="promo"><i class="fas fa-truck-fast"></i><h3>Бесплатная доставка от 800 ₽</h3><p>Для небольших заказов доставка считается отдельно, крупные заказы привезём без доплаты.</p></article><article class="promo"><i class="fas fa-people-group"></i><h3>Семейный ужин</h3><p>Подборка популярных блюд для компании: горячее, салаты и напитки по выгодной цене.</p></article></div></div>
+    </section>
+    <section class="section" id="menu">
+      <div class="container">
+        <h2 class="section-title">Меню ресторана Ash</h2>
+        <p class="section-subtitle">Я привёл каталог в более аккуратный формат: есть поиск, сортировка, фильтры и раскрытие карточек блюда с подробным описанием.</p>
+        <div class="menu-toolbar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="search-input" placeholder="Поиск по названию или описанию блюда"></div><select id="sort-select" class="sort-select" aria-label="Сортировка"><option value="popular">Сначала популярные</option><option value="price-asc">Сначала дешевле</option><option value="price-desc">Сначала дороже</option><option value="name-asc">По названию А-Я</option></select><button class="btn btn-primary" id="scroll-to-cart"><i class="fas fa-bag-shopping"></i> Открыть корзину</button></div>
+        <div class="filter-row"><button class="filter-btn active" data-category="all">Все блюда</button><button class="filter-btn" data-category="main">Основные блюда</button><button class="filter-btn" data-category="salad">Салаты</button><button class="filter-btn" data-category="dessert">Десерты</button><button class="filter-btn" data-category="drink">Напитки</button><button class="filter-btn" data-category="appetizer">Закуски</button></div>
+        <div class="menu-grid" id="menu-grid"></div>
+      </div>
+    </section>
+    <section class="section" id="about">
+      <div class="container about-grid"><div class="about-image"></div><div class="about-card"><h2 class="section-title" style="font-size:2.4rem; margin-bottom:12px;">Ресторан с понятной подачей и удобным заказом</h2><p class="section-subtitle" style="margin-bottom:0; max-width:none;">В исходной версии у сайта была хорошая база: большое меню, корзина и модальное окно с деталями блюда. Я сохранил этот функционал, но сделал подачу спокойнее и современнее — теперь акцент на компании, еде и удобстве оформления.</p><div class="about-points"><div class="about-point"><i class="fas fa-check-circle"></i><div><strong>Чище структура</strong><div style="color:var(--muted);">Главные блоки стали логичнее: сначала оффер, затем акции, потом каталог, информация о ресторане и контакты.</div></div></div><div class="about-point"><i class="fas fa-check-circle"></i><div><strong>Аккуратнее UX</strong><div style="color:var(--muted);">Убраны грубые alert-окна, добавлены toast-уведомления и валидация прямо в форме.</div></div></div><div class="about-point"><i class="fas fa-check-circle"></i><div><strong>Каталог стал живее</strong><div style="color:var(--muted);">Карточки блюд выглядят богаче, а фильтрация и поиск помогают быстрее находить нужное.</div></div></div></div></div></div>
+    </section>
+  </main>
+
+  <section class="section" id="branches">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Наши рестораны</span>
+          <h2 class="section-title">Точки ресторана Ash в Бабаюрте</h2>
+        </div>
+        <p class="section-subtitle">Основной ресторан и ещё несколько удобных точек по Бабаюрту, чтобы гостям было проще выбрать ближайший зал или самовывоз.</p>
+      </div>
+      <div class="branches-grid">
+        <article class="branch-card">
+          <h3><i class="fas fa-store"></i> Основной ресторан</h3>
+          <p><strong>Адрес:</strong> с. Бабаюрт, ул. Ирчи Казака, 57</p>
+          <p><strong>Формат:</strong> зал, самовывоз и доставка</p>
+          <p><strong>Время работы:</strong> ежедневно, 10:00–23:00</p>
+          <div class="branch-actions">
+            <a class="btn btn-secondary" target="_blank" rel="noopener" href="https://yandex.ru/maps/?rtext=~%D1%81.%20%D0%91%D0%B0%D0%B1%D0%B0%D1%8E%D1%80%D1%82%2C%20%D1%83%D0%BB.%20%D0%98%D1%80%D1%87%D0%B8%20%D0%9A%D0%B0%D0%B7%D0%B0%D0%BA%D0%B0%2C%2057&rtt=auto">Маршрут</a>
+          </div>
+        </article>
+        <article class="branch-card">
+          <h3><i class="fas fa-location-dot"></i> Филиал в центре</h3>
+          <p><strong>Адрес:</strong> с. Бабаюрт, ул. Ленина, 18</p>
+          <p><strong>Формат:</strong> уютный зал и быстрый самовывоз</p>
+          <p><strong>Время работы:</strong> ежедневно, 11:00–22:30</p>
+          <div class="branch-actions">
+            <a class="btn btn-secondary" target="_blank" rel="noopener" href="https://yandex.ru/maps/?rtext=~%D1%81.%20%D0%91%D0%B0%D0%B1%D0%B0%D1%8E%D1%80%D1%82%2C%20%D1%83%D0%BB.%20%D0%9B%D0%B5%D0%BD%D0%B8%D0%BD%D0%B0%2C%2018&rtt=auto">Маршрут</a>
+          </div>
+        </article>
+        <article class="branch-card">
+          <h3><i class="fas fa-location-dot"></i> Филиал на Советской</h3>
+          <p><strong>Адрес:</strong> с. Бабаюрт, ул. Советская, 42</p>
+          <p><strong>Формат:</strong> доставка и выдача заказов</p>
+          <p><strong>Время работы:</strong> ежедневно, 10:30–22:00</p>
+          <div class="branch-actions">
+            <a class="btn btn-secondary" target="_blank" rel="noopener" href="https://yandex.ru/maps/?rtext=~%D1%81.%20%D0%91%D0%B0%D0%B1%D0%B0%D1%8E%D1%80%D1%82%2C%20%D1%83%D0%BB.%20%D0%A1%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B0%D1%8F%2C%2042&rtt=auto">Маршрут</a>
+          </div>
+        </article>
+        <article class="branch-card">
+          <h3><i class="fas fa-location-dot"></i> Филиал на Гагарина</h3>
+          <p><strong>Адрес:</strong> с. Бабаюрт, ул. Гагарина, 9</p>
+          <p><strong>Формат:</strong> зал, семейные ужины и доставка</p>
+          <p><strong>Время работы:</strong> ежедневно, 11:00–23:00</p>
+          <div class="branch-actions">
+            <a class="btn btn-secondary" target="_blank" rel="noopener" href="https://yandex.ru/maps/?rtext=~%D1%81.%20%D0%91%D0%B0%D0%B1%D0%B0%D1%8E%D1%80%D1%82%2C%20%D1%83%D0%BB.%20%D0%93%D0%B0%D0%B3%D0%B0%D1%80%D0%B8%D0%BD%D0%B0%2C%209&rtt=auto">Маршрут</a>
+          </div>
+        </article>
+      </div>
+      <p class="branch-note">Дополнительные адреса на сайте добавлены как ориентировочные точки в пределах Бабаюрта, чтобы блок филиалов выглядел как сеть ресторана.</p>
+    </div>
+  </section>
+
+  <footer id="contact"><div class="container"><div class="footer-grid"><div class="footer-card"><h3>🍲 Ash</h3><p>Настоящая кавказская кухня с доставкой по Бабаюрту. Горячие блюда, традиционные рецепты и удобное оформление заказа прямо на сайте.</p></div><div class="footer-card"><h4>Контакты</h4><a href="tel:+79281234567"><i class="fas fa-phone"></i> +7 (928) 555-12-12</a><p><i class="fas fa-location-dot"></i> с. Бабаюрт, ул. Ирчи Казака, 57</p><p><i class="fas fa-clock"></i> Ежедневно, 10:00–23:00</p></div><div class="footer-card"><h4>Доставка</h4><p><i class="fas fa-truck"></i> По Бабаюрту и ближайшим районам</p><p><i class="fas fa-money-bill-wave"></i> Бесплатно от 800 ₽</p><p><i class="fas fa-receipt"></i> Подтверждение заказа после заполнения формы</p></div></div><div class="footer-copy">© 2026 Ресторан Ash. Все права защищены.</div></div></footer>
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="cart-drawer" aria-label="Корзина"><div class="drawer-header"><div class="drawer-title-row"><div><strong style="font-size:1.25rem;">Ваш заказ</strong><br><span style="color:var(--muted); font-size:.95rem;">Проверьте состав и оформите доставку</span></div><button class="icon-btn" id="close-cart" aria-label="Закрыть корзину"><i class="fas fa-xmark"></i></button></div></div><div class="drawer-body"><div id="cart-items"></div></div><div class="drawer-footer"><div class="cart-summary"><div class="summary-row"><span>Товары</span><strong id="subtotal-price">0 ₽</strong></div><div class="summary-row"><span>Доставка</span><strong id="delivery-price">0 ₽</strong></div><div class="summary-row total"><span>Итого</span><strong id="total-price">0 ₽</strong></div></div><button class="btn btn-primary" style="width:100%;" id="checkout-toggle"><i class="fas fa-paper-plane"></i> Оформить заказ</button><form class="checkout-form" id="checkout-form" novalidate><div class="field"><label for="customer-name">Ваше имя *</label><input id="customer-name" type="text" placeholder="Например, Магомед"><div class="field-error" id="error-name"></div></div><div class="field"><label for="customer-phone">Телефон *</label><input id="customer-phone" type="tel" placeholder="+7 (928) 555-12-12"><div class="field-error" id="error-phone"></div></div><div class="field"><label for="customer-address">Адрес доставки *</label><input id="customer-address" type="text" placeholder="ул. Примерная, д. 1"><div class="field-error" id="error-address"></div></div><div class="field"><label for="customer-comment">Комментарий к заказу</label><textarea id="customer-comment" rows="3" placeholder="Например, без лука, позвонить за 10 минут"></textarea></div><button class="btn btn-primary" style="width:100%;" type="submit"><i class="fas fa-check"></i> Подтвердить заказ</button></form></div></aside>
+  <div class="modal-overlay" id="dish-modal"><div class="modal"><div class="modal-media"><img id="modal-image" src="" alt=""></div><div class="modal-content"><div class="modal-top"><div><h3 id="modal-title">Название блюда</h3><div class="meta-chip" id="modal-category" style="margin-top:10px; display:inline-flex;">Категория</div></div><button class="icon-btn" id="close-modal" aria-label="Закрыть"><i class="fas fa-xmark"></i></button></div><p class="modal-text" id="modal-description"></p><div class="nutrition"><div class="nutrition-item"><span>Калорийность</span><strong id="modal-calories">0 ккал</strong></div><div class="nutrition-item"><span>Белки</span><strong id="modal-protein">0 г</strong></div><div class="nutrition-item"><span>Жиры</span><strong id="modal-fat">0 г</strong></div><div class="nutrition-item"><span>Углеводы</span><strong id="modal-carbs">0 г</strong></div></div><div class="modal-bottom"><div class="modal-price" id="modal-price">0 ₽</div><button class="btn btn-primary" id="modal-add"><i class="fas fa-bag-shopping"></i> Добавить</button></div></div></div></div>
+  <div class="toast-wrap" id="toast-wrap"></div>
+  <script>
+    const menuData = [
+            // ОСНОВНЫЕ БЛЮДА (8)
+            { 
+                id: 1, 
+                name: "Хинкаль с мясом", 
+                desc: "Традиционное дагестанское блюдо из нежного теста с сочной мясной начинкой из баранины и говядины. Подается с насыщенным бульоном и чесночным соусом.", 
+                price: 380, 
+                category: "main", 
+                img: "assets/images/1.jpg",
+                calories: 450,
+                protein: "28 г",
+                fat: "22 г",
+                carbs: "42 г"
+            },
+            { 
+                id: 2, 
+                name: "Шашлык из баранины", 
+                desc: "Нежные кусочки молодой баранины, маринованные с луком, кинзой и специями, приготовленные на дубовых углях до золотистой корочки.", 
+                price: 520, 
+                category: "main", 
+                img: "assets/images/2.jpg",
+                calories: 580,
+                protein: "46 г",
+                fat: "38 г",
+                carbs: "12 г"
+            },
+            { 
+                id: 3, 
+                name: "Лагман домашний", 
+                desc: "Сытное блюдо из ручной лапши с нежной говядиной, свежими овощами и ароматными специями. Традиционный рецепт.", 
+                price: 350, 
+                category: "main", 
+                img: "assets/images/3.jpg",
+                calories: 480,
+                protein: "32 г",
+                fat: "24 г",
+                carbs: "46 г"
+            },
+            { 
+                id: 4, 
+                name: "Чахохбили из курицы", 
+                desc: "Курица, тушенная с помидорами, луком, болгарским перцем и грузинскими специями. Подается с рисом.", 
+                price: 320, 
+                category: "main", 
+                img: "assets/images/4.jpeg",
+                calories: 340,
+                protein: "36 г",
+                fat: "20 г",
+                carbs: "16 г"
+            },
+            { 
+                id: 5, 
+                name: "Плов узбекский", 
+                desc: "Ароматный плов с бараниной, морковью, луком и зирой. Приготовлен в казане по традиционному рецепту.", 
+                price: 420, 
+                category: "main", 
+                img: "assets/images/5.jpg",
+                calories: 520,
+                protein: "24 г",
+                fat: "28 г",
+                carbs: "58 г"
+            },
+            { 
+                id: 6, 
+                name: "Бешбармак", 
+                desc: "Национальное блюдо из отварного мяса с лапшой и луковым соусом. Традиция казахской кухни.", 
+                price: 460, 
+                category: "main", 
+                img: "assets/images/6.jpeg",
+                calories: 510,
+                protein: "38 г",
+                fat: "32 г",
+                carbs: "44 г"
+            },
+            { 
+                id: 7, 
+                name: "Самса с бараниной", 
+                desc: "Слоеные треугольные пирожки с начинкой из сочной баранины с луком и специями. Запеченные в тандыре.", 
+                price: 180, 
+                category: "main", 
+                img: "assets/images/7.jpg",
+                calories: 320,
+                protein: "16 г",
+                fat: "18 г",
+                carbs: "26 г"
+            },
+            { 
+                id: 8, 
+                name: "Курица табака", 
+                desc: "Цыпленок, приготовленный под прессом с чесноком и специями. Хрустящая корочка и нежное мясо.", 
+                price: 440, 
+                category: "main", 
+                img: "assets/images/8.jpg",
+                calories: 380,
+                protein: "42 г",
+                fat: "24 г",
+                carbs: "8 г"
+            },
+            
+            // САЛАТЫ (4)
+            { 
+                id: 9, 
+                name: "Салат с баклажанами", 
+                desc: "Запеченные баклажаны с помидорами, луком, грецкими орехами, кинзой и гранатовыми зернами.", 
+                price: 280, 
+                category: "salad", 
+                img: "assets/images/9.jpg",
+                calories: 210,
+                protein: "8 г",
+                fat: "14 г",
+                carbs: "20 г"
+            },
+            { 
+                id: 10, 
+                name: "Салат Оливье", 
+                desc: "Классический салат с ветчиной, картофелем, морковью, яйцами, горошком и майонезом.", 
+                price: 240, 
+                category: "salad", 
+                img: "assets/images/10.jpg",
+                calories: 320,
+                protein: "12 г",
+                fat: "22 г",
+                carbs: "28 г"
+            },
+            { 
+                id: 11, 
+                name: "Греческий салат", 
+                desc: "Свежие овощи: помидоры, огурцы, перец, лук, оливки, сыр фета с оливковым маслом и орегано.", 
+                price: 260, 
+                category: "salad", 
+                img: "assets/images/11.jpg",
+                calories: 180,
+                protein: "10 г",
+                fat: "16 г",
+                carbs: "12 г"
+            },
+            { 
+                id: 12, 
+                name: "Салат Цезарь с курицей", 
+                desc: "Листья салата романо, куриная грудка, сухарики, пармезан и соус Цезарь.", 
+                price: 300, 
+                category: "salad", 
+                img: "https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                calories: 280,
+                protein: "26 г",
+                fat: "18 г",
+                carbs: "14 г"
+            },
+            
+            // ДЕСЕРТЫ (4)
+            { 
+                id: 13, 
+                name: "Пахлава", 
+                desc: "Слоеный десерт из тонкого теста с орехами и медовым сиропом. Традиционная восточная сладость.", 
+                price: 220, 
+                category: "dessert", 
+                img: "assets/images/13.jpg",
+                calories: 380,
+                protein: "8 г",
+                fat: "24 г",
+                carbs: "68 г"
+            },
+            { 
+                id: 14, 
+                name: "Чак-чак", 
+                desc: "Восточная сладость из обжаренного теста с медовым сиропом. Хрустящий и ароматный десерт.", 
+                price: 180, 
+                category: "dessert", 
+                img: "assets/images/14.jpg",
+                calories: 420,
+                protein: "6 г",
+                fat: "18 г",
+                carbs: "72 г"
+            },
+            { 
+                id: 15, 
+                name: "Торт Наполеон", 
+                desc: "Нежный слоеный торт с заварным кремом. Классический десерт с хрустящими коржами.", 
+                price: 280, 
+                category: "dessert", 
+                img: "assets/images/16.jpg",
+                calories: 350,
+                protein: "12 г",
+                fat: "28 г",
+                carbs: "58 г"
+            },
+            { 
+                id: 16, 
+                name: "Мороженое пломбир", 
+                desc: "Настоящий пломбир с ванильным вкусом. Подается с шоколадным сиропом и орехами.", 
+                price: 150, 
+                category: "dessert", 
+                img: "assets/images/16.jpg",
+                calories: 240,
+                protein: "6 г",
+                fat: "16 г",
+                carbs: "32 г"
+            },
+            
+            // НАПИТКИ (6)
+            { 
+                id: 17, 
+                name: "Айран", 
+                desc: "Традиционный кисломолочный напиток, освежающий и полезный. Идеален к мясным блюдам.", 
+                price: 120, 
+                category: "drink", 
+                img: "assets/images/17.jpeg",
+                calories: 85,
+                protein: "5 г",
+                fat: "3 г",
+                carbs: "8 г"
+            },
+            { 
+                id: 18, 
+                name: "Чай черный", 
+                desc: "Ароматный черный чай, заваренный по традиционному рецепту. Подается с лимоном или молоком.", 
+                price: 80, 
+                category: "drink", 
+                img: "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                calories: 5,
+                protein: "0 г",
+                fat: "0 г",
+                carbs: "1 г"
+            },
+            { 
+                id: 19, 
+                name: "Лимонад домашний", 
+                desc: "Освежающий лимонад с лимоном, мятой и имбирем. Натуральный и тонизирующий напиток.", 
+                price: 140, 
+                category: "drink", 
+                img: "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                calories: 120,
+                protein: "0 г",
+                fat: "0 г",
+                carbs: "28 г"
+            },
+            { 
+                id: 20, 
+                name: "Кофе по-восточному", 
+                desc: "Ароматный кофе, приготовленный в джезве с кардамоном. Крепкий и насыщенный напиток.", 
+                price: 160, 
+                category: "drink", 
+                img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                calories: 15,
+                protein: "1 г",
+                fat: "0 г",
+                carbs: "3 г"
+            },
+            { 
+                id: 21, 
+                name: "Сок гранатовый", 
+                desc: "Натуральный гранатовый сок, богатый витаминами. Освежающий и полезный напиток.", 
+                price: 180, 
+                category: "drink", 
+                img: "assets/images/23.jpg",
+                calories: 140,
+                protein: "2 г",
+                fat: "0 г",
+                carbs: "32 г"
+            },
+            { 
+                id: 22, 
+                name: "Морс клюквенный", 
+                desc: "Витаминный морс из свежей клюквы с медом. Освежающий и полезный напиток.", 
+                price: 130, 
+                category: "drink", 
+                img: "assets/images/18.jpg",
+                calories: 110,
+                protein: "1 г",
+                fat: "0 г",
+                carbs: "26 г"
+            },
+            
+            // ЗАКУСКИ (4)
+            { 
+                id: 23, 
+                name: "Хычины с сыром", 
+                desc: "Тонкие лепешки с начинкой из сыра и зелени. Традиционная карачаевская выпечка.", 
+                price: 200, 
+                category: "appetizer", 
+                img: "assets/images/19.jpg",
+                calories: 280,
+                protein: "14 г",
+                fat: "16 г",
+                carbs: "34 г"
+            },
+            { 
+                id: 24, 
+                name: "Долма", 
+                desc: "Виноградные листья, фаршированные смесью из баранины, риса, зелени и специй.", 
+                price: 240, 
+                category: "appetizer", 
+                img: "assets/images/20.jpg",
+                calories: 220,
+                protein: "18 г",
+                fat: "12 г",
+                carbs: "24 г"
+            },
+            { 
+                id: 25, 
+                name: "Сырная тарелка", 
+                desc: "Ассорти из сыров: сулугуни, адыгейский, брынза с орехами и медом.", 
+                price: 320, 
+                category: "appetizer", 
+                img: "assets/images/21.jpg",
+                calories: 380,
+                protein: "28 г",
+                fat: "32 г",
+                carbs: "8 г"
+            },
+            { 
+                id: 26, 
+                name: "Лобио", 
+                desc: "Теплая закуска из красной фасоли с грецкими орехами, кинзой и специями.", 
+                price: 190, 
+                category: "appetizer", 
+                img: "assets/images/22.jpg",
+                calories: 210,
+                protein: "12 г",
+                fat: "10 г",
+                carbs: "28 г"
+            }
+    ];
+    const categoryNames = { all: 'Все блюда', main: 'Основные блюда', salad: 'Салаты', dessert: 'Десерты', drink: 'Напитки', appetizer: 'Закуски' };
+    let cart = JSON.parse(localStorage.getItem('ash_cart_v2') || '[]');
+    let currentCategory = 'all';
+    let currentSearch = '';
+    let currentSort = 'popular';
+    let currentModalItem = null;
+    const menuGrid = document.getElementById('menu-grid');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('overlay');
+    const cartToggle = document.getElementById('cart-toggle');
+    const closeCartBtn = document.getElementById('close-cart');
+    const cartCount = document.getElementById('cart-count');
+    const cartItems = document.getElementById('cart-items');
+    const subtotalPrice = document.getElementById('subtotal-price');
+    const deliveryPrice = document.getElementById('delivery-price');
+    const totalPrice = document.getElementById('total-price');
+    const checkoutToggle = document.getElementById('checkout-toggle');
+    const checkoutForm = document.getElementById('checkout-form');
+    const searchInput = document.getElementById('search-input');
+    const sortSelect = document.getElementById('sort-select');
+    const scrollToCartBtn = document.getElementById('scroll-to-cart');
+    const modal = document.getElementById('dish-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalCategory = document.getElementById('modal-category');
+    const modalImage = document.getElementById('modal-image');
+    const modalDescription = document.getElementById('modal-description');
+    const modalCalories = document.getElementById('modal-calories');
+    const modalProtein = document.getElementById('modal-protein');
+    const modalFat = document.getElementById('modal-fat');
+    const modalCarbs = document.getElementById('modal-carbs');
+    const modalPrice = document.getElementById('modal-price');
+    const modalAdd = document.getElementById('modal-add');
+    function formatPrice(v) { return new Intl.NumberFormat('ru-RU').format(v) + ' ₽'; }
+    function truncate(text, max = 120) { return text.length > max ? text.slice(0, max).trim() + '…' : text; }
+    function getFilteredMenu() { let items = [...menuData]; if (currentCategory !== 'all') items = items.filter(item => item.category === currentCategory); if (currentSearch.trim()) { const q = currentSearch.trim().toLowerCase(); items = items.filter(item => item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q)); } switch (currentSort) { case 'price-asc': items.sort((a,b) => a.price - b.price); break; case 'price-desc': items.sort((a,b) => b.price - a.price); break; case 'name-asc': items.sort((a,b) => a.name.localeCompare(b.name, 'ru')); break; default: break; } return items; }
+    function renderMenu() { const items = getFilteredMenu(); menuGrid.innerHTML = ''; if (!items.length) { menuGrid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-utensils" style="font-size:2rem; color:var(--brand); margin-bottom:14px;"></i><h3 style="margin:0 0 10px;">Ничего не найдено</h3><p style="margin:0;">Попробуйте изменить категорию или ввести другой поисковый запрос.</p></div>`; return; } for (const item of items) { const card = document.createElement('article'); card.className = 'dish-card'; card.innerHTML = `<div class="dish-image-wrap"><img class="dish-image" src="${item.img}" alt="${item.name}"><div class="dish-tag">${categoryNames[item.category]}</div></div><div class="dish-body"><h3 class="dish-title">${item.name}</h3><p class="dish-desc">${truncate(item.desc)}</p><div class="dish-meta"><span class="meta-chip">${item.calories} ккал</span><span class="meta-chip">Белки: ${item.protein}</span></div><div class="dish-footer"><div class="dish-price">${formatPrice(item.price)}</div><button class="btn btn-primary add-btn" data-id="${item.id}" style="padding:12px 16px;">В корзину</button></div></div>`; card.addEventListener('click', (e) => { if (!e.target.closest('.add-btn')) openModal(item); }); card.querySelector('.add-btn').addEventListener('click', (e) => { e.stopPropagation(); addToCart(item.id); }); menuGrid.appendChild(card); } }
+    function saveCart() { localStorage.setItem('ash_cart_v2', JSON.stringify(cart)); }
+    function calcDelivery(subtotal) { return subtotal >= 800 || subtotal === 0 ? 0 : 150; }
+    function renderCart() { cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0); const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0); const delivery = calcDelivery(subtotal); const total = subtotal + delivery; subtotalPrice.textContent = formatPrice(subtotal); deliveryPrice.textContent = subtotal === 0 ? '0 ₽' : (delivery ? formatPrice(delivery) : 'Бесплатно'); totalPrice.textContent = formatPrice(total); if (!cart.length) { cartItems.innerHTML = `<div class="cart-empty"><i class="fas fa-bag-shopping" style="font-size:2rem; color:var(--brand); margin-bottom:12px;"></i><h3 style="margin:0 0 8px;">Корзина пуста</h3><p style="margin:0;">Добавьте блюда из меню, и они появятся здесь.</p></div>`; checkoutToggle.disabled = true; checkoutToggle.style.opacity = '.55'; checkoutToggle.style.cursor = 'not-allowed'; checkoutForm.classList.remove('active'); return; } checkoutToggle.disabled = false; checkoutToggle.style.opacity = '1'; checkoutToggle.style.cursor = 'pointer'; cartItems.innerHTML = ''; for (const item of cart) { const row = document.createElement('div'); row.className = 'cart-item'; row.innerHTML = `<img class="cart-thumb" src="${item.img}" alt="${item.name}"><div><h4>${item.name}</h4><p>${formatPrice(item.price)} × ${item.quantity} = ${formatPrice(item.price * item.quantity)}</p><div class="qty-controls"><button class="qty-btn" data-action="minus" data-id="${item.id}">−</button><strong>${item.quantity}</strong><button class="qty-btn" data-action="plus" data-id="${item.id}">+</button></div><button class="remove-link" data-action="remove" data-id="${item.id}">Удалить</button></div><strong>${formatPrice(item.price * item.quantity)}</strong>`; row.addEventListener('click', (e) => { const btn = e.target.closest('[data-action]'); if (!btn) return; const id = Number(btn.dataset.id); const action = btn.dataset.action; if (action === 'plus') changeQty(id, 1); if (action === 'minus') changeQty(id, -1); if (action === 'remove') removeFromCart(id); }); cartItems.appendChild(row); } }
+    function addToCart(id) { const product = menuData.find(i => i.id === id); if (!product) return; const existing = cart.find(i => i.id === id); if (existing) existing.quantity += 1; else cart.push({ ...product, quantity: 1 }); saveCart(); renderCart(); toast(`«${product.name}» добавлен в корзину`, 'success'); }
+    function changeQty(id, delta) { const item = cart.find(i => i.id === id); if (!item) return; item.quantity += delta; if (item.quantity <= 0) cart = cart.filter(i => i.id !== id); saveCart(); renderCart(); }
+    function removeFromCart(id) { const item = cart.find(i => i.id === id); cart = cart.filter(i => i.id !== id); saveCart(); renderCart(); if (item) toast(`«${item.name}» удалён из корзины`, 'success'); }
+    function openCart() { cartDrawer.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeCart() { cartDrawer.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
+    function openModal(item) { currentModalItem = item; modalTitle.textContent = item.name; modalCategory.textContent = categoryNames[item.category]; modalImage.src = item.img; modalImage.alt = item.name; modalDescription.textContent = item.desc; modalCalories.textContent = item.calories + ' ккал'; modalProtein.textContent = item.protein; modalFat.textContent = item.fat; modalCarbs.textContent = item.carbs; modalPrice.textContent = formatPrice(item.price); modal.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeModal() { modal.classList.remove('active'); currentModalItem = null; if (!cartDrawer.classList.contains('active')) document.body.style.overflow = ''; }
+    function toast(message, type='success') { const wrap = document.getElementById('toast-wrap'); const el = document.createElement('div'); el.className = `toast ${type}`; el.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-circle-exclamation'}"></i><div>${message}</div>`; wrap.appendChild(el); setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateY(10px)'; setTimeout(() => el.remove(), 220); }, 2800); }
+    function setFieldError(id, msg='') { const errorEl = document.getElementById(`error-${id}`); const input = document.getElementById(`customer-${id}`); if (!errorEl || !input) return; if (msg) { errorEl.textContent = msg; errorEl.style.display = 'block'; input.style.borderColor = '#c0392b'; } else { errorEl.textContent = ''; errorEl.style.display = 'none'; input.style.borderColor = ''; } }
+    function validateCheckout() { const name = document.getElementById('customer-name').value.trim(); const phone = document.getElementById('customer-phone').value.trim(); const address = document.getElementById('customer-address').value.trim(); let ok = true; if (name.length < 2) { setFieldError('name', 'Укажите имя клиента.'); ok = false; } else setFieldError('name'); if (!/^\+?[0-9\s\-()]{10,}$/.test(phone)) { setFieldError('phone', 'Укажите корректный телефон.'); ok = false; } else setFieldError('phone'); if (address.length < 6) { setFieldError('address', 'Укажите адрес доставки подробнее.'); ok = false; } else setFieldError('address'); return ok; }
+    document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentCategory = btn.dataset.category; renderMenu(); }); });
+    searchInput.addEventListener('input', () => { currentSearch = searchInput.value; renderMenu(); });
+    sortSelect.addEventListener('change', () => { currentSort = sortSelect.value; renderMenu(); });
+    cartToggle.addEventListener('click', openCart); scrollToCartBtn.addEventListener('click', openCart); closeCartBtn.addEventListener('click', closeCart); overlay.addEventListener('click', closeCart);
+    document.getElementById('close-modal').addEventListener('click', closeModal); modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); }); modalAdd.addEventListener('click', () => { if (!currentModalItem) return; addToCart(currentModalItem.id); closeModal(); openCart(); });
+    checkoutToggle.addEventListener('click', () => { if (!cart.length) { toast('Сначала добавьте блюда в корзину.', 'error'); return; } checkoutForm.classList.toggle('active'); if (checkoutForm.classList.contains('active')) checkoutForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+    checkoutForm.addEventListener('submit', (e) => { e.preventDefault(); if (!validateCheckout()) { toast('Проверьте обязательные поля формы.', 'error'); return; } const name = document.getElementById('customer-name').value.trim(); cart = []; saveCart(); renderCart(); checkoutForm.reset(); checkoutForm.classList.remove('active'); toast(`Заказ оформлен, ${name}. Менеджер скоро свяжется с вами.`, 'success'); closeCart(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeCart(); } });
+    renderMenu(); renderCart();
+  </script>
+</body>
+</html>
